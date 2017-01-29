@@ -1,41 +1,53 @@
-# Hknife
+# hknife
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/hknife`. To experiment with that code, run `bin/console` for an interactive prompt.
+It's DSL to create HTTP request pipline.
+There is no implementation. There is an only idea.
+If there is feature you want, please create issue.
 
-TODO: Delete this and the text above, and describe your gem
+# How to use
 
-## Installation
+## Sending get request
 
-Add this line to your application's Gemfile:
+get('http://www.example.com')
 
-```ruby
-gem 'hknife'
-```
+## Sending get request and post request with reponse of previous get request
 
-And then execute:
+get('http://www.example.com').
+  post('http://www.example.com/', response('id'))
 
-    $ bundle
+## Sending named get request and post request with the response
 
-Or install it yourself as:
+name('named_get_request').
+  get('http://www.example.com')
 
-    $ gem install hknife
+name('named_get_request') do |request, response|
+  post(response('url'), response('id'))
+end
 
-## Usage
+## Sending get request with customer header
 
-TODO: Write usage instructions here
+header(Host: 'www.example.com').get('http://93.184.216.34/')
 
-## Development
+## Sending request asynchronously
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+get("http://www.example.com/request1") do |res|
+  get("http://www.example.com/after_request1") do|res|
+    
+  end
+end
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+## Sending multiple get requests and send post request after all request ends
 
-## Contributing
+parallel do
+  name('request1').get("http://www.example.com/request1")
+  name('request2').get("http://www.example.com/request2")  
+end.
+  post('http://www.example.com/', 
+    name('request1').response('id'), 
+    name('request2').response('key1'))
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/hknife. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
+## Check 404 error
 
-## License
-
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
+get('http://www.example.com').
+  response.status
