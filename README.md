@@ -1,53 +1,46 @@
 # hknife
 
-It's DSL to create HTTP request pipline.
-There is no implementation. There is an only idea.
-If there is feature you want, please create issue.
+It's a client http library and inspired by sinatra.
+Focus on simpler and understand easily what request will be send from the code.
+Notice it's super alpha quality and stability of interface.
 
 # How to use
 
 ## Sending get request
 
-get('http://www.example.com')
+get('http://www.example.com').send
 
 ## Sending get request and post request with reponse of previous get request
 
-get('http://www.example.com').
-  post('http://www.example.com/', response('id'))
-
-## Sending named get request and post request with the response
-
-name('named_get_request').
-  get('http://www.example.com')
-
-name('named_get_request') do |request, response|
-  post(response('url'), response('id'))
-end
+res = get('http://www.example.com').response
+post('http://www.example.com/', id: res.body['id]).response
 
 ## Sending get request with customer header
 
-header(Host: 'www.example.com').get('http://93.184.216.34/')
+get('http://93.184.216.34/').
+  header(Host: 'www.example.com').
+  send
 
 ## Sending request asynchronously
 
-get("http://www.example.com/request1") do |res|
-  get("http://www.example.com/after_request1") do|res|
-    
-  end
+get("http://www.example.com/request1").async do |res|
+  puts res.body
 end
 
-## Sending multiple get requests and send post request after all request ends
+get("http://www.example.com/request2").async do|res|
+  puts res.body
+end
 
-parallel do
-  name('request1').get("http://www.example.com/request1")
-  name('request2').get("http://www.example.com/request2")  
-end.
-  post('http://www.example.com/', 
-    name('request1').response('id'), 
-    name('request2').response('key1'))
+## Sending multiple requests and send post request after all request ends
 
+reqs = get("http://www.example.com/request0").
+  get("http://www.example.com/request1").
+  get("http://www.example.com/request2")
+  
+post_form(reqs.response(0).body['uri'], 
+  { "id" => reqs.response(1).body['id'], 
+    "uri" => reqs.response(2).body['key1'] })
 
-## Check 404 error
+## Check response code
 
-get('http://www.example.com').
-  response.status
+get('http://www.example.com').response.code
