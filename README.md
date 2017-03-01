@@ -16,7 +16,7 @@ get('http://www.example.com').send
 
 ```ruby
 res = get('http://www.example.com').response
-post('http://www.example.com/', id: res.body['id]).response
+post_form('http://www.example.com/', id: res.body['id]).response
 ```
 
 ## Sending get request with customer header
