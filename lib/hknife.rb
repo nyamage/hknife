@@ -26,7 +26,7 @@ module Hknife
       @requestor = lambda do |request| 
         res = @http_client.request(request) 
         case res['Content-Type']
-        when 'application/json' then
+        when /application\/json/ then
           res.body = JSON.parse(res.body)
         end
         res
@@ -44,7 +44,7 @@ module Hknife
         res = @http_client.request(@request, URI.encode_www_form(data))
 
         case res['Content-Type']
-        when 'application/json' then
+        when /application\/json/ then
           res.body = JSON.parse(res.body)
         end
         res
