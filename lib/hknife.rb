@@ -19,9 +19,8 @@ module Hknife
 
     def get(uri)
       uriObj = URI.parse(uri)
-      port = uriObj.default_port if uriObj.port.nil?
-      @http_client = Net::HTTP.new(uriObj.host, port)
-      @http_client.use_ssl = uri.scheme == 'https'
+      @http_client = Net::HTTP.new(uriObj.host, uriObj.port)
+      @http_client.use_ssl = uriObj.scheme == 'https'
       @request = Net::HTTP::Get.new(uriObj.path)
       @requestor = lambda do |request| 
         res = @http_client.request(request) 
@@ -36,9 +35,8 @@ module Hknife
 
     def post_form(uri, data)      
       uriObj = URI.parse(uri)
-      port = uriObj.default_port if uriObj.port.nil?
-      @http_client = Net::HTTP.new(uriObj.host, port)
-      @http_client.use_ssl = uri.scheme == 'https'
+      @http_client = Net::HTTP.new(uriObj.host, uriObj.port)
+      @http_client.use_ssl = uriObj.scheme == 'https'
       @request = Net::HTTP::Post.new(uriObj.path)
       @requestor = lambda do |request| 
         res = @http_client.request(@request, URI.encode_www_form(data))
