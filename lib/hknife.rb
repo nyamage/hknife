@@ -33,6 +33,22 @@ module Hknife
       self
     end
 
+    def put(uri, data)
+      uriObj = URI.parse(uri)
+      @http_client = Net::HTTP.new(uriObj.host, uriObj.port)
+      @http_client.use_ssl = uriObj.scheme == 'https'
+      @request = Net::HTTP::Put.new(uriObj.path)
+      @requestor = lambda do |request| 
+        res = @http_client.request(request) 
+        case res['Content-Type']
+        when /application\/json/ then
+          res.body = JSON.parse(res.body)
+        end
+        res
+      end
+      self
+    end
+
     def post_form(uri, data)      
       uriObj = URI.parse(uri)
       @http_client = Net::HTTP.new(uriObj.host, uriObj.port)
@@ -99,6 +115,13 @@ module Hknife
       self
     end
 
+    def put(uri, data)  
+      req = Request.new()
+      req.put(uri, data)
+      @queue << req       
+      self
+    end    
+
     def header(hdr)
       @queue.last.header(hdr)
       self
@@ -159,6 +182,17 @@ module Hknife
         obj
       end
 
+      def put(uri, data)
+        obj = RequestQueue.new
+        obj.put(uri, data)
+
+        if block_given?
+          yield obj.request, obj.response
+        end
+
+        obj
+      end      
+
       def header(hsh)
         obj = RequestQueue.new
         obj.header(hsh)
@@ -182,7 +216,7 @@ module Hknife
       end
     end
 
-    delegate :get, :post_form, :request, :header, :parallel
+    delegate :get, :post_form, :request, :header, :parallel, :put
 
     class << self
       attr_accessor :target

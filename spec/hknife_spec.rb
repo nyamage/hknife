@@ -15,6 +15,19 @@ describe Hknife do
     expect(res.code).to eq "200"
   end
 
+  it 'send put request to specified uri' do
+    extend Hknife::Delegator    
+    stub_request(:put, "http://www.example.com/").
+      to_return(
+        body: '{ "uri": "http://www.example.com/", "id": "abc" }',
+        status: 200,
+        headers: { 'Content-Type' => 'application/json' }
+      )
+    res = put('http://www.example.com/', {"id" => "abc"}).response
+    expect(res.code).to eq "200"
+    expect(res.body['id']).to eq "abc"
+  end
+
   it 'send post request to specified uri' do
     extend Hknife::Delegator    
     stub_request(:post, "http://www.example.com/").
