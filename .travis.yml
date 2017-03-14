@@ -3,3 +3,11 @@ language: ruby
 rvm:
   - 2.2.5
 before_install: gem install bundler -v 1.12.2
+deploy:
+  provider: rubygems
+  api_key:
+    secure: sS8zt7wkkRVC4teTUW7l3A0N2vWG7qQVNpYV8ExTNCwHsGCoUgOIsjpLiJDRGM0KNmpfBNDFK4YnYVeJNfJT0FOWiBScVC0JllHYRD9A1YdHwtN4vAKUB7bL+pYEy6LmNX9AiJnNH9j9y6eE5kwtfu0lNQkFoky5oBf3J5njPl21gD0qou7I4E3+Mp3h93zDHu71ghk/EO8BDpY6ZSEUFW8RG90Jgwo14fVKA/BVDMq3L8plGEnunovAka9sNoQ5Rf9sZbI2hqFt+ytbBjoqOVBLGti3L4iJvES6+ZIiH31Q6j9puL74zSx8H2f2RvxlZaHFT74GgzjAIL7eW4GgnKmhT0TK+3oYQVnQPXD5Cg6Ub8xF+YWatjtMwhlFIhPSCzETFWNk40/ngPL7fQD7rK7ZbB6xFxyqc2tkuPsg4vOePKAiaPt7iRsNw87ThOm+IkcXIQAm+IPp9o20x/SozD2MKNfm4NIpm4xRAihr2QPgEn7e4rbxu7jncMaOtz9U/d5g20orpWl1bt9FMv9OG0Tjw1DKioUPqAWLuUKKSN9rPS5IogQaFXHSptTCnJeeQX12izjhC9D/AVxxnXKieXdESS4mYheNGGWByc/lO/cD8wZcMGL64gY0DyTUV7bg0nhPVM26Oi1asoTxPko6dFHEBx97xkkrxrzaW/Qa+Uk=
+  gem: hknife
+  on:
+    tags: true
+    repo: nyamage/hknife
