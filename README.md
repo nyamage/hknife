@@ -1,5 +1,7 @@
 # hknife
 
+[![Build Status](https://travis-ci.org/nyamage/hknife.svg?branch=master)](https://travis-ci.org/nyamage/hknife)
+
 It's a client http library and inspired by sinatra.
 Focus on simpler and understand easily what request will be send from the code.
 Notice it's super alpha quality.
