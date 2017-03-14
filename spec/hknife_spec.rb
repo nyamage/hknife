@@ -15,6 +15,16 @@ describe Hknife do
     expect(res.code).to eq "200"
   end
 
+  it 'send delete request to specified uri' do
+    extend Hknife::Delegator
+    stub_request(:delete, "http://www.example.com/").
+      to_return(
+        status: 200,
+      )
+    res = delete('http://www.example.com/').response
+    expect(res.code).to eq "200"
+  end
+
   it 'send put request to specified uri' do
     extend Hknife::Delegator    
     stub_request(:put, "http://www.example.com/").
