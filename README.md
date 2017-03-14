@@ -2,7 +2,7 @@
 
 It's a client http library and inspired by sinatra.
 Focus on simpler and understand easily what request will be send from the code.
-Notice it's super alpha quality and stability of interface.
+Notice it's super alpha quality.
 
 # How to use
 
@@ -12,6 +12,8 @@ Notice it's super alpha quality and stability of interface.
 get('http://www.example.com').send
 ```
 
+Request is not sent until calling send or response method.
+
 ## Sending get request and post request with reponse of previous get request
 
 ```ruby
@@ -19,7 +21,7 @@ res = get('http://www.example.com').response
 post_form('http://www.example.com/', id: res.body['id]).response
 ```
 
-## Sending get request with customer header
+## Sending get request with specified header
 
 ```ruby
 get('http://93.184.216.34/').
@@ -51,7 +53,7 @@ post_form(reqs.response(0).body['uri'],
     "uri" => reqs.response(2).body['key1'] })
 ```
 
-## Check response code
+## Get http response code
 
 ```ruby
 get('http://www.example.com').response.code
