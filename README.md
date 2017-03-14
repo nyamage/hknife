@@ -3,7 +3,7 @@
 It's a client http library and inspired by sinatra.
 Focus on simpler and understand easily what request will be send from the code.
 Notice it's super alpha quality.
-
+ 
 # How to use
 
 ## Sending get request
